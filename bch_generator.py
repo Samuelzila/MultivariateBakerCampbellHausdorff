@@ -2,10 +2,9 @@ from sage.all import SR, MatrixSpace, FreeAlgebra, I, factorial
 from sage.categories.lie_algebras import LieAlgebras
 from sage.algebras.lie_algebras.lie_algebra import LieAlgebra
 
-n = 2
+n = 3
 
 g = LieAlgebra(SR, "H", n)
-g = LieAlgebra(SR, 'X,Y')
 H = g.gens()
 
 
@@ -36,7 +35,7 @@ def F(k):
     while p[0] <= n:
 
         # Compute the commutator term
-        commutator = g.bracket(H[p[1]-1], H[p[0]-1]) if k > 0 else H[p[0]-1]
+        commutator = g.bracket(H[p[1]-1], H[p[0]-1]) if len(p) > 1 else H[p[0]-1]
         for j in p[2:]:
             commutator = g.bracket(H[j-1], commutator)
 
@@ -57,27 +56,27 @@ def F(k):
 
     return total
 
+
 def omega(k):
     term1 = (SR(1) / k) * F(k-1)
 
-    commutator_total = g.zero()
-    for r in magic_iterator(n, k):
-        commutator = g.bracket(omega(r[1]), omega(r[0])) if len(r) > 1 else omega(r[0])
-        print(f"Initial commutator for r={r}: {commutator}")
-        for j in r[2:]:
-            commutator = g.bracket(omega(j), commutator)
+    term2 = (SR(1) / k)
 
-        commutator_total += commutator
-        print(f"Updated commutator_total after r={r}: {commutator_total}")
-    term2 = - (SR(1) / k)
     term3 = g.zero()
-    for j in range(1, n):
-        term3 += (SR(1)/factorial(SR(n+1)))*commutator_total
+    for N in range(1, k):
+        commutator_total = g.zero()
+        for r in magic_iterator(N+1, k):
+            commutator = r[0]*omega(r[0])
+            for j in reversed(range(1, len(r))):
+                commutator = g.bracket(omega(r[j]), commutator)
 
-    print(f"term1: {term1}, term2: {term2}, term3: {term3}")
+            commutator_total += commutator
 
-    return term1 + (term2*term3)
+        term3 += (SR(1)/factorial(SR(N+1)))*commutator_total
+
+    return term1 - (term2*term3)
 
 
-print(omega(3))
+for j in range(1,5):
+    print(omega(j))
 
