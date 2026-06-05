@@ -26,6 +26,7 @@ class MultivariateBakerCampbellHausdorff:
         self.lie_algebra = lie_algebra
         self.H = tuple(generators)
         self.n = len(generators)
+        self.ring = lie_algebra.base_ring()
 
 
     def __call__(self, k):
@@ -76,9 +77,9 @@ class MultivariateBakerCampbellHausdorff:
         F = self.F
         omega = self.omega
 
-        term1 = (SR(1) / k) * F(k-1)
+        term1 = (self.ring(1) / k) * F(k-1)
 
-        term2 = (SR(1) / k)
+        term2 = (self.ring(1) / k)
 
         term3 = g.zero()
         for N in range(1, k):
@@ -90,7 +91,7 @@ class MultivariateBakerCampbellHausdorff:
 
                 commutator_total += commutator
 
-            term3 += (SR(1)/factorial(SR(N+1)))*commutator_total
+            term3 += (self.ring(1)/factorial(self.ring(N+1)))*commutator_total
 
         return term1 - (term2*term3)
 

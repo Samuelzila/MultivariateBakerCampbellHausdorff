@@ -18,13 +18,14 @@ def compositions(size,total):
             yield (x,) + rest
 
 
-def gamma_coefficient(n, indices):
+def gamma_coefficient(n, indices, ring=SR):
     """
     Computes the gamma coefficients for the commutator terms.
     `n` is the total number of generators, and `indices` is a list of the indices
     of the generators involved in the commutator.
+    Optionally, a `ring` can be specified to compute the coefficients in a particular algebraic structure.
     """
-    product = SR(1)
+    product = ring(1)
     for q in range(1, n+1):
-        product *= factorial(sum(SR(1) for j in indices if j == q))
-    return SR(1) / product
+        product *= factorial(sum(ring(1) for j in indices if j == q))
+    return ring(1) / product
