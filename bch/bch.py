@@ -51,7 +51,7 @@ class MultivariateBakerCampbellHausdorff:
                 commutator = g.bracket(H[j-1], commutator)
 
             # Compute gamma
-            γ = gamma_coefficient(n, p[1:])
+            γ = gamma_coefficient(n, p[1:], ring=self.ring)
 
             # Add the term to the total
             total += γ * commutator
