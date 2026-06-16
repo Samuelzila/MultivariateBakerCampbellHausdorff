@@ -37,3 +37,7 @@ Alternatively, you can compute a specific term of the BCH expansion directly:
 term = bch.nth(3) # Returns the third order term of the BCH expansion
 print(term)
 ```
+
+## Acknowledgements
+
+Thank you to [Maxime Dion](https://github.com/oneminimax) for providing the mathematical formulas on which this implementation is based.
